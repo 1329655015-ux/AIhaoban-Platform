@@ -1,102 +1,130 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>AI好伴 - 一站式AI智能平台</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<title>AI好伴 - 一站式AI智能平台</title>
 
-        body {
-            font-family: "Microsoft YaHei", Arial, sans-serif;
-            background: #f5f7fa;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        .layout {
-            display: flex;
-            width: 100%;
-            height: 100vh;
-        }
+body{
+    font-family:"Microsoft YaHei",Arial,sans-serif;
+    background:#f5f7fa;
+}
 
-        /* 左侧导航 */
-        .sidebar {
-            width: 20%;
-            min-width: 260px;
-            background: #1f1f1f;
-            color: #fff;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-        }
+.layout{
+    display:flex;
+    width:100%;
+    height:100vh;
+}
 
-        .logo {
-            font-size: 22px;
-            text-align: center;
-            padding: 20px 0;
-            font-weight: bold;
-            border-bottom: 1px solid #333;
-            margin-bottom: 10px;
-        }
+/* 左侧导航 */
+.sidebar{
+    width:20%;
+    min-width:260px;
+    background:#1f1f1f;
+    color:#fff;
+    padding:20px 0;
+    display:flex;
+    flex-direction:column;
+}
 
-        .nav-item {
-            padding: 14px 20px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-        }
+.logo{
+    font-size:22px;
+    text-align:center;
+    padding:20px 0;
+    font-weight:bold;
+    border-bottom:1px solid #333;
+    margin-bottom:10px;
+}
 
-        .nav-item:hover {
-            background: #333;
-        }
+.nav-item{
+    padding:14px 20px;
+    cursor:pointer;
+    transition:0.2s;
+    display:flex;
+    align-items:center;
+}
 
-        .nav-item.active {
-            background: #1890ff;
-        }
+.nav-item:hover{
+    background:#333;
+}
 
-        /* 右侧内容 */
-        .content {
-            width: 80%;
-            padding: 40px;
-            background: #ffffff;
-            overflow-y: auto;
-        }
+.nav-item.active{
+    background:#1890ff;
+}
 
-        .page {
-            display: none;
-        }
+/* 右侧内容 */
+.content{
+    width:80%;
+    padding:40px;
+    background:#fff;
+    overflow-y:auto;
+}
 
-        .page.active {
-            display: block;
-        }
+.page{
+    display:none;
+}
 
-        h1 {
-            color: #1890ff;
-            margin-bottom: 20px;
-        }
+.page.active{
+    display:block;
+}
 
-        .card {
-            background: #f8f9fb;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
+h1{
+    color:#1890ff;
+    margin-bottom:20px;
+}
 
-        .tips {
-            color: #666;
-            line-height: 1.6;
-        }
-    </style>
+.card{
+    background:#f8f9fb;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom:20px;
+}
+
+.tips{
+    color:#666;
+    line-height:1.6;
+}
+
+input,select,button{
+    padding:10px;
+    margin-top:10px;
+    margin-bottom:10px;
+    width:100%;
+    border-radius:6px;
+    border:1px solid #ddd;
+}
+
+button{
+    background:#1890ff;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0d78d4;
+}
+
+.result img{
+    margin-top:15px;
+    border-radius:10px;
+    max-width:100%;
+}
+</style>
 </head>
+
 <body>
 
 <div class="layout">
 
-    <!-- 左侧导航栏 -->
+    <!-- 左侧导航 -->
     <div class="sidebar">
         <div class="logo">🚀 AI好伴</div>
 
@@ -110,36 +138,38 @@
     </div>
 
     <!-- 右侧内容区 -->
-    <!-- 图像生成 -->
-<div id="image" class="page">
-    <h1>图像生成</h1>
+    <div class="content">
 
-    <div class="card">
-        <label>选择模型：</label>
-        <select id="modelSelect">
-            <option value="sd">Stable Diffusion</option>
-            <option value="dalle">DALL·E</option>
-            <option value="mj">MidJourney</option>
-        </select>
-
-        <label>输入提示词（中文）：</label>
-        <input type="text" id="promptInput" placeholder="例如：一个美女模特在咖啡馆，写实风格，8K">
-
-        <button onclick="generateImage()">生成图片</button>
-
-        <div class="result" id="result"></div>
-    </div>
-</div>
-
+        <!-- 首页 -->
+        <div id="home" class="page active">
+            <h1>欢迎来到 AI好伴</h1>
+            <div class="card">
+                <p class="tips">
+                    这是一个一站式 AI 创作平台。<br>
+                    支持：图像生成 / 视频生成 / AI声音 / 搜索 / PPT / 论文 等功能。<br><br>
+                    从左侧选择功能开始体验 🚀
+                </p>
+            </div>
+        </div>
 
         <!-- 图像生成 -->
         <div id="image" class="page">
             <h1>图像生成</h1>
+
             <div class="card">
-                <p class="tips">
-                    这里将接入：文生图 / 图生图 / AI绘画 等功能。
-                </p>
-                <p class="tips">（下一步我会给你补完整功能区）</p>
+                <label>选择模型：</label>
+                <select id="modelSelect">
+                    <option value="sd">Stable Diffusion</option>
+                    <option value="dalle">DALL·E</option>
+                    <option value="mj">MidJourney</option>
+                </select>
+
+                <label>输入提示词（中文）：</label>
+                <input type="text" id="promptInput" placeholder="例如：一个赛博朋克女孩，电影场景，8K，超写实">
+
+                <button onclick="generateImage()">生成图片</button>
+
+                <div class="result" id="result"></div>
             </div>
         </div>
 
@@ -148,7 +178,7 @@
             <h1>视频生成</h1>
             <div class="card">
                 <p class="tips">
-                    这里将实现：图生视频 / 换脸 / AI数字人 等功能。
+                    这里将实现：图生视频 / AI动画 / 数字人
                 </p>
             </div>
         </div>
@@ -158,7 +188,7 @@
             <h1>AI声音</h1>
             <div class="card">
                 <p class="tips">
-                    这里将实现：语音合成 / 声音克隆 / 音频生成。
+                    这里将实现：语音合成 / 声音克隆 / 配音
                 </p>
             </div>
         </div>
@@ -168,7 +198,7 @@
             <h1>超级AI搜索</h1>
             <div class="card">
                 <p class="tips">
-                    学术 / 网盘 / 文件 / 网站 四大AI搜索引擎
+                    学术 + 网盘 + 网站 + 文件 智能搜索
                 </p>
             </div>
         </div>
@@ -178,7 +208,7 @@
             <h1>精美PPT</h1>
             <div class="card">
                 <p class="tips">
-                    一键快速生成专业级PPT
+                    一句话生成专业级 PPT
                 </p>
             </div>
         </div>
@@ -188,7 +218,7 @@
             <h1>论文助手</h1>
             <div class="card">
                 <p class="tips">
-                    帮助你生成论文大纲、正文、参考文献
+                    自动生成论文大纲、正文、参考文献
                 </p>
             </div>
         </div>
@@ -196,38 +226,46 @@
     </div>
 </div>
 
+
 <script>
-    function showPage(pageId, element) {
+function showPage(pageId, element) {
 
-        // 全部内容隐藏
-        const pages = document.querySelectorAll('.page');
-        pages.forEach(p => p.classList.remove('active'));
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(p => p.classList.remove('active'));
 
-        // 显示当前
-        document.getElementById(pageId).classList.add('active');
+    document.getElementById(pageId).classList.add('active');
 
-        // 导航高亮
-        const navs = document.querySelectorAll('.nav-item');
-        navs.forEach(n => n.classList.remove('active'));
-        element.classList.add('active');
-    }
-</script>
+    const navs = document.querySelectorAll('.nav-item');
+    navs.forEach(n => n.classList.remove('active'));
+    element.classList.add('active');
+}
+
+
 function generateImage() {
     const model = document.getElementById('modelSelect').value;
     const prompt = document.getElementById('promptInput').value.trim();
-    if(!prompt) { alert('请输入提示词'); return; }
+
+    if(!prompt){
+        alert("请输入提示词");
+        return;
+    }
 
     const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = '<p>正在生成图片...</p>';
+    resultDiv.innerHTML = "<p>正在生成图片，请稍等...</p>";
 
-    // 这里是预留 API 调用位置
-    // 你后续只需在下面 fetch URL 填入你的后台接口
     setTimeout(() => {
-        // 模拟生成图片
-        resultDiv.innerHTML = `<p>生成成功！模型：${model}</p>
-        <img src="https://via.placeholder.com/512x512.png?text=AI+生成图像" alt="生成图像">`;
-    }, 1000);
+        resultDiv.innerHTML = `
+            <p>✅ 生成成功！使用模型：${model}</p>
+            <img src="https://via.placeholder.com/512x512.png?text=AI+生成图像">
+        `;
+    },1000);
 }
+
+// 默认显示首页
+window.onload = function(){
+    document.getElementById("home").classList.add("active");
+}
+</script>
 
 </body>
 </html>
