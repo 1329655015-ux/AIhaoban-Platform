@@ -3,1077 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 AI好伴 - 全球AI聚合</title>
+    <title>AI好伴 - 全球AI聚合平台</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <style>
-        /* 使用系统字体，避免加载外部字体 */
-        :root {
-            --primary-color: #6366f1;
-            --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
-            --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --card-hover: rgba(255, 255, 255, 0.15);
-            --card-active: rgba(99, 102, 241, 0.25);
-            --text-primary: #ffffff;
-            --text-secondary: #cbd5e1;
-            --main-bg: #f8fafc;
-            --toolbar-bg: #ffffff;
-            --content-bg: #ffffff;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --border-radius: 12px;
-        }
-
-        body.dark-mode {
-            --main-bg: #0f172a;
-            --toolbar-bg: #1e293b;
-            --content-bg: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background-color: var(--main-bg);
-            color: #333;
-            transition: background-color 0.3s ease;
-            overflow: hidden;
-        }
-
-        .app-container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        /* 左侧导航栏样式 */
-        .sidebar {
-            width: 280px;
-            background: 
-                linear-gradient(180deg, #0f172a 0%, #1e293b 100%),
-                radial-gradient(circle at 20% 30%, rgba(96, 165, 250, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(167, 139, 250, 0.05) 0%, transparent 40%),
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 10px,
-                    rgba(255, 255, 255, 0.02) 10px,
-                    rgba(255, 255, 255, 0.02) 20px
-                );
-            color: var(--text-primary);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-        }
-
-        .logo-area {
-            padding: 20px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-
-        .logo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .rocket-icon {
-            font-size: 32px;
-            color: #60a5fa;
-            margin-bottom: 5px;
-        }
-
-        .rocket-icon::before {
-            content: "🚀";
-        }
-
-        .logo h1 {
-            font-size: 22px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .logo-subtitle {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .nav-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .nav-section {
-            margin-bottom: 20px;
-        }
-
-        .section-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            margin-bottom: 12px;
-            padding-left: 12px;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .nav-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 16px;
-            border-radius: 10px;
-            margin-bottom: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: 
-                linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%),
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 5px,
-                    rgba(255, 255, 255, 0.02) 5px,
-                    rgba(255, 255, 255, 0.02) 10px
-                );
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-        }
-
-        .nav-card:hover {
-            background: 
-                linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%),
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 5px,
-                    rgba(255, 255, 255, 0.03) 5px,
-                    rgba(255, 255, 255, 0.03) 10px
-                );
-            color: var(--text-primary);
-            transform: translateX(5px);
-            border-color: rgba(96, 165, 250, 0.3);
-        }
-
-        .nav-card.active {
-            background: 
-                linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(96, 165, 250, 0.2) 100%),
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 5px,
-                    rgba(255, 255, 255, 0.05) 5px,
-                    rgba(255, 255, 255, 0.05) 10px
-                );
-            color: var(--text-primary);
-            border-left: 4px solid #60a5fa;
-            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
-        }
-
-        .nav-card i {
-            font-size: 18px;
-            width: 24px;
-            text-align: center;
-        }
-
-        /* 使用Unicode图标替代FontAwesome */
-        .nav-card[data-page="home"] i::before { content: "🏠"; }
-        .nav-card[data-page="super-chat"] i::before { content: "💬"; }
-        .nav-card[data-page="super-agent"] i::before { content: "🤖"; }
-        .nav-card[data-page="super-intelligence"] i::before { content: "🧠"; }
-        .nav-card[data-page="image-generation"] i::before { content: "🖼️"; }
-        .nav-card[data-page="ai-drawing"] i::before { content: "🎨"; }
-        .nav-card[data-page="stock-analysis"] i::before { content: "📈"; }
-        .nav-card[data-page="3d-models"] i::before { content: "🧊"; }
-        .nav-card[data-page="video-generation"] i::before { content: "🎬"; }
-        .nav-card[data-page="suno-music"] i::before { content: "🎵"; }
-        .nav-card[data-page="recent-hot"] i::before { content: "🔥"; }
-        .nav-card[data-page="super-ai-search"] i::before { content: "🔍"; }
-        .nav-card[data-page="beautiful-ppt"] i::before { content: "📊"; }
-        .nav-card[data-page="audio-processing"] i::before { content: "🔊"; }
-        .nav-card[data-page="ai-voice"] i::before { content: "🎤"; }
-        .nav-card[data-page="document-processing"] i::before { content: "📄"; }
-        .nav-card[data-page="ai-treasure-box"] i::before { content: "🧰"; }
-        .nav-card[data-page="ai-design"] i::before { content: "🎨"; }
-        .nav-card[data-page="smart-charts"] i::before { content: "📊"; }
-        .nav-card[data-page="writing-assistant"] i::before { content: "✍️"; }
-        .nav-card[data-page="online-translation"] i::before { content: "🌐"; }
-        .nav-card[data-page="article-aigc"] i::before { content: "📰"; }
-        .nav-card[data-page="more-functions"] i::before { content: "⋯"; }
-        .nav-card[data-page="1000-functions"] i::before { content: "∞"; }
-        .nav-card[data-page="pdf-tools"] i::before { content: "📄"; }
-        .nav-card[data-page="search-tools"] i::before { content: "🔎"; }
-        .nav-card[data-page="download-client"] i::before { content: "⬇️"; }
-
-        .nav-card span {
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        .highlight-card {
-            background: rgba(96, 165, 250, 0.15);
-            border: 1px solid rgba(96, 165, 250, 0.3);
-        }
-
-        .highlight-card:hover {
-            background: rgba(96, 165, 250, 0.25);
-        }
-
-        .bottom-section {
-            margin-top: auto;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            padding: 16px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 12px;
-            border: 2px solid #60a5fa;
-        }
-
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .user-details {
-            flex: 1;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .user-status {
-            font-size: 12px;
-            color: #94a3b8;
-        }
-
-        .user-actions {
-            font-size: 18px;
-            cursor: pointer;
-            color: #94a3b8;
-            transition: color 0.2s;
-        }
-
-        .user-actions:hover {
-            color: var(--text-primary);
-        }
-
-        .user-actions::before {
-            content: "⚙️";
-        }
-
-        /* 右侧主内容区样式 */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* 顶部工具栏 */
-        .top-toolbar {
-            height: 70px;
-            background: var(--toolbar-bg);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            box-shadow: var(--shadow);
-            z-index: 5;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background: #f1f5f9;
-            border-radius: 50px;
-            padding: 8px 16px;
-            width: 400px;
-            transition: all 0.3s;
-        }
-
-        body.dark-mode .search-bar {
-            background: #334155;
-        }
-
-        .search-bar i {
-            color: #64748b;
-            margin-right: 10px;
-        }
-
-        .search-bar i::before {
-            content: "🔍";
-        }
-
-        .search-bar input {
-            border: none;
-            background: transparent;
-            flex: 1;
-            font-size: 15px;
-            color: #334155;
-            outline: none;
-        }
-
-        body.dark-mode .search-bar input {
-            color: #cbd5e1;
-        }
-
-        .search-bar input::placeholder {
-            color: #94a3b8;
-        }
-
-        .search-btn {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 8px 20px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: transform 0.2s;
-        }
-
-        .search-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .toolbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .toolbar-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: #64748b;
-            transition: color 0.2s;
-        }
-
-        .toolbar-item:hover {
-            color: var(--primary-color);
-        }
-
-        .toolbar-item i::before {
-            display: inline-block;
-        }
-
-        .toolbar-item .points {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .toolbar-item i {
-            font-size: 18px;
-        }
-
-        .toolbar-item[class*="coins"] i::before { content: "🪙"; }
-        .toolbar-item.notification i::before { content: "🔔"; }
-        .toolbar-item.theme-toggle i::before { content: "🌙"; }
-
-        body.dark-mode .toolbar-item.theme-toggle i::before { content: "☀️"; }
-
-        .notification {
-            position: relative;
-        }
-
-        .badge {
-            position: absolute;
-            top: -5px;
-            right: -8px;
-            background: #ef4444;
-            color: white;
-            font-size: 11px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .theme-toggle {
-            font-size: 18px;
-        }
-
-        .upgrade-btn {
-            background: linear-gradient(90deg, #f59e0b, #f97316);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 18px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.2s;
-        }
-
-        .upgrade-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-        }
-
-        .upgrade-btn i::before {
-            content: "👑";
-        }
-
-        /* 内容区域 */
-        .content-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-            background: var(--main-bg);
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .page-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        body.dark-mode .page-title {
-            color: #f1f5f9;
-        }
-
-        .page-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--card-bg);
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 10px 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #475569;
-        }
-
-        body.dark-mode .action-btn {
-            background: #334155;
-            border-color: #475569;
-            color: #cbd5e1;
-        }
-
-        .action-btn:hover {
-            background: #f1f5f9;
-            transform: translateY(-2px);
-        }
-
-        body.dark-mode .action-btn:hover {
-            background: #475569;
-        }
-
-        .action-btn i::before {
-            display: inline-block;
-        }
-
-        .action-btn:first-child i::before { content: "➕"; }
-        .action-btn:last-child i::before { content: "📜"; }
-
-        /* 欢迎页面样式 */
-        .welcome-message {
-            text-align: center;
-            padding: 60px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .welcome-icon {
-            font-size: 80px;
-            color: #60a5fa;
-            margin-bottom: 24px;
-        }
-
-        .welcome-icon i::before {
-            content: "🚀";
-        }
-
-        .welcome-message h3 {
-            font-size: 36px;
-            margin-bottom: 16px;
-            color: #1e293b;
-        }
-
-        body.dark-mode .welcome-message h3 {
-            color: #f1f5f9;
-        }
-
-        .welcome-message p {
-            font-size: 18px;
-            color: #64748b;
-            margin-bottom: 8px;
-        }
-
-        .subtext {
-            font-size: 16px;
-            margin-bottom: 40px !important;
-        }
-
-        .feature-highlights {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .feature-card {
-            background: var(--content-bg);
-            border-radius: var(--border-radius);
-            padding: 24px;
-            width: 240px;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-        }
-
-        .feature-card i {
-            font-size: 36px;
-            color: #60a5fa;
-            margin-bottom: 16px;
-        }
-
-        .feature-card i::before {
-            display: inline-block;
-        }
-
-        .feature-card:first-child i::before { content: "🤖"; }
-        .feature-card:nth-child(2) i::before { content: "🧠"; }
-        .feature-card:last-child i::before { content: "✨"; }
-
-        .feature-card h4 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #1e293b;
-        }
-
-        body.dark-mode .feature-card h4 {
-            color: #f1f5f9;
-        }
-
-        .feature-card p {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        /* 占位页面样式 */
-        .page-placeholder {
-            padding: 40px;
-            text-align: center;
-            background: var(--content-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-top: 20px;
-        }
-
-        .page-placeholder h3 {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            color: #1e293b;
-            font-size: 24px;
-        }
-
-        body.dark-mode .page-placeholder h3 {
-            color: #f1f5f9;
-        }
-
-        .page-placeholder i {
-            font-size: 24px;
-        }
-
-        .page-placeholder p {
-            color: #64748b;
-            margin-bottom: 30px;
-        }
-
-        .placeholder-image {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .placeholder-image img {
-            width: 100%;
-            border-radius: 12px;
-        }
-
-        /* 滚动条样式 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-    </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- 左侧导航栏 -->
-        <aside class="sidebar">
-            <!-- Logo区域 -->
-            <div class="logo-area">
-                <div class="logo">
-                    <div class="rocket-icon"></div>
-                    <h1>AI好伴</h1>
-                </div>
-                <div class="logo-subtitle">全球AI聚合</div>
-            </div>
-
-            <!-- 导航卡片区域 -->
-            <nav class="nav-container">
-                <!-- 第一组：核心功能区 -->
-                <div class="nav-section">
-                    <div class="nav-card active" data-page="home">
-                        <i></i>
-                        <span>首页</span>
-                    </div>
-                    <div class="nav-card" data-page="super-chat">
-                        <i></i>
-                        <span>超级对话</span>
-                    </div>
-                    <div class="nav-card" data-page="super-agent">
-                        <i></i>
-                        <span>超级Agent</span>
-                    </div>
-                    <div class="nav-card" data-page="super-intelligence">
-                        <i></i>
-                        <span>超级智能体</span>
-                    </div>
-                    <div class="nav-card" data-page="image-generation">
-                        <i></i>
-                        <span>图像生成</span>
-                    </div>
-                    <div class="nav-card" data-page="ai-drawing">
-                        <i></i>
-                        <span>AI修图</span>
-                    </div>
-                    <div class="nav-card" data-page="stock-analysis">
-                        <i></i>
-                        <span>股票分析</span>
-                    </div>
-                </div>
-
-                <!-- 第二组：工具箱 -->
-                <div class="nav-section">
-                    <div class="section-label">工具箱</div>
-                    <div class="nav-card" data-page="3d-models">
-                        <i></i>
-                        <span>3D模型</span>
-                    </div>
-                    <div class="nav-card" data-page="video-generation">
-                        <i></i>
-                        <span>视频生成</span>
-                    </div>
-                    <div class="nav-card" data-page="suno-music">
-                        <i></i>
-                        <span>Suno音乐</span>
-                    </div>
-                    <div class="nav-card" data-page="recent-hot">
-                        <i></i>
-                        <span>近期热门</span>
-                    </div>
-                    <div class="nav-card" data-page="super-ai-search">
-                        <i></i>
-                        <span>超级AI搜索</span>
-                    </div>
-                    <div class="nav-card" data-page="beautiful-ppt">
-                        <i></i>
-                        <span>精美PPT</span>
-                    </div>
-                    <div class="nav-card" data-page="audio-processing">
-                        <i></i>
-                        <span>音频处理</span>
-                    </div>
-                    <div class="nav-card" data-page="ai-voice">
-                        <i></i>
-                        <span>AI声音</span>
-                    </div>
-                    <div class="nav-card" data-page="document-processing">
-                        <i></i>
-                        <span>文档处理</span>
-                    </div>
-                    <div class="nav-card" data-page="ai-treasure-box">
-                        <i></i>
-                        <span>AI百宝箱</span>
-                    </div>
-                    <div class="nav-card" data-page="ai-design">
-                        <i></i>
-                        <span>AI设计</span>
-                    </div>
-                    <div class="nav-card" data-page="smart-charts">
-                        <i></i>
-                        <span>智能图表</span>
-                    </div>
-                </div>
-
-                <!-- 第三组：热门功能 -->
-                <div class="nav-section">
-                    <div class="section-label">热门功能</div>
-                    <div class="nav-card" data-page="writing-assistant">
-                        <i></i>
-                        <span>写作助手</span>
-                    </div>
-                    <div class="nav-card" data-page="online-translation">
-                        <i></i>
-                        <span>在线翻译</span>
-                    </div>
-                    <div class="nav-card" data-page="article-aigc">
-                        <i></i>
-                        <span>文章AIGC</span>
-                    </div>
-                    <div class="nav-card" data-page="more-functions">
-                        <i></i>
-                        <span>更多功能</span>
-                    </div>
-                    <div class="nav-card highlight-card" data-page="1000-functions">
-                        <i></i>
-                        <span>1000+功能</span>
-                    </div>
-                </div>
-
-                <!-- 底部功能区 -->
-                <div class="nav-section bottom-section">
-                    <div class="nav-card" data-page="pdf-tools">
-                        <i></i>
-                        <span>PDF工具</span>
-                    </div>
-                    <div class="nav-card" data-page="search-tools">
-                        <i></i>
-                        <span>搜索1000+个AI工具</span>
-                    </div>
-                    <div class="nav-card" data-page="download-client">
-                        <i></i>
-                        <span>下载客户端</span>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- 用户信息区域 -->
-            <div class="user-info">
-                <div class="user-avatar">
-                    <img src="111.jpg" alt="用户头像" onerror="this.style.display='none'; this.parentElement.innerHTML='👤'">
-                </div>
-                <div class="user-details">
-                    <div class="user-name">用户</div>
-                    <div class="user-status">免费版</div>
-                </div>
-                <div class="user-actions"></div>
-            </div>
-        </aside>
-
-        <!-- 右侧主内容区 -->
-        <main class="main-content">
-            <!-- 固定工具栏 -->
-            <header class="top-toolbar">
-                <div class="search-bar">
-                    <i></i>
-                    <input type="text" placeholder="搜索AI工具或功能...">
-                    <button class="search-btn">搜索</button>
-                </div>
-                
-                <div class="toolbar-actions">
-                    <div class="toolbar-item">
-                        <i></i>
-                        <span class="points">1500 积分</span>
-                    </div>
-                    <div class="toolbar-item notification">
-                        <i></i>
-                        <span class="badge">3</span>
-                    </div>
-                    <div class="toolbar-item theme-toggle">
-                        <i></i>
-                    </div>
-                    <div class="toolbar-item">
-                        <button class="upgrade-btn">
-                            <i></i>
-                            升级会员
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <!-- 内容展示区 -->
-            <div class="content-area">
-                <!-- 当前页面标题 -->
-                <div class="page-header">
-                    <h2 class="page-title">首页</h2>
-                    <div class="page-actions">
-                        <button class="action-btn">
-                            <i></i>
-                            新建
-                        </button>
-                        <button class="action-btn">
-                            <i></i>
-                            历史记录
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 页面内容占位区 -->
-                <div class="page-content" id="pageContent">
-                    <!-- 这里的内容会根据左侧导航点击动态加载 -->
-                    <div class="welcome-message">
-                        <div class="welcome-icon">
-                            <i></i>
-                        </div>
-                        <h3>欢迎使用 AI好伴</h3>
-                        <p>请从左侧导航选择您需要的AI功能</p>
-                        <p class="subtext">集大成于一身的AI工具集合，支持1000+种AI功能</p>
-                        
-                        <div class="feature-highlights">
-                            <div class="feature-card">
-                                <i></i>
-                                <h4>DeepSeek专线</h4>
-                                <p>AI搜索、AI写作、图像生成、AI阅读等</p>
-                            </div>
-                            <div class="feature-card">
-                                <i></i>
-                                <h4>40+模型支持</h4>
-                                <p>GT-40-mini、边界GT-4.0、GPT-4等</p>
-                            </div>
-                            <div class="feature-card">
-                                <i></i>
-                                <h4>智能工具箱</h4>
-                                <p>文档处理、音频处理、AI设计等</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
+    <div id="app"></div>
+    
     <script>
-        // 页面加载完成后执行
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('页面加载完成');
+        // 防止加载延迟
+        (function() {
+            // 立即显示加载状态
+            document.body.innerHTML = '<div style="padding: 50px; text-align: center; font-family: sans-serif;">正在加载 AI好伴...</div>';
             
-            // 获取所有导航卡片
-            const navCards = document.querySelectorAll('.nav-card');
-            const pageContent = document.getElementById('pageContent');
-            const pageTitle = document.querySelector('.page-title');
-            
-            // 页面内容模板
-            const pageTemplates = {
-                'home': `
-                    <div class="welcome-message">
-                        <div class="welcome-icon">
-                            <i></i>
-                        </div>
-                        <h3>欢迎使用 AI好伴</h3>
-                        <p>请从左侧导航选择您需要的AI功能</p>
-                        <p class="subtext">集大成于一身的AI工具集合，支持1000+种AI功能</p>
-                        
-                        <div class="feature-highlights">
-                            <div class="feature-card">
-                                <i></i>
-                                <h4>DeepSeek专线</h4>
-                                <p>AI搜索、AI写作、图像生成、AI阅读等</p>
+            // 生成完整页面
+            setTimeout(function() {
+                const html = `
+                <!DOCTYPE html>
+                <html lang="zh-CN">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>AI好伴 - 全球AI聚合平台</title>
+                </head>
+                <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f7fa;">
+                    <div style="display: flex; height: 100vh; overflow: hidden;">
+                        <!-- 左侧导航栏 -->
+                        <div style="width: 280px; background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); color: white; display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.1);">
+                            <!-- Logo区域 -->
+                            <div style="padding: 30px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+                                    <div style="font-size: 48px; margin-bottom: 10px;">🚀</div>
+                                    <h1 style="font-size: 32px; font-weight: 700; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0;">AI好伴</h1>
+                                </div>
+                                <div style="font-size: 14px; color: #94a3b8;">全球AI聚合</div>
                             </div>
-                            <div class="feature-card">
-                                <i></i>
-                                <h4>40+模型支持</h4>
-                                <p>GT-40-mini、边界GT-4.0、GPT-4等</p>
-                            </div>
-                            <div class="feature-card">
-                                <i></i>
-                                <h4>智能工具箱</h4>
-                                <p>文档处理、音频处理、AI设计等</p>
-                            </div>
-                        </div>
-                    </div>
-                `,
-                'super-chat': '<div class="page-placeholder"><h3><i></i> 超级对话</h3><p>多模型对话功能，支持100+大模型</p></div>',
-                'super-agent': '<div class="page-placeholder"><h3><i></i> 超级Agent</h3><p>智能Agent系统，全模型调用</p></div>',
-                'super-intelligence': '<div class="page-placeholder"><h3><i></i> 超级智能体</h3><p>1000+功能集成</p></div>',
-                'image-generation': '<div class="page-placeholder"><h3><i></i> 图像生成</h3><p>3D手办、插画、头像生成</p></div>',
-                'ai-drawing': '<div class="page-placeholder"><h3><i></i> AI修图</h3><p>深度修图、PS功能</p></div>',
-                'stock-analysis': '<div class="page-placeholder"><h3><i></i> 股票分析</h3><p>精准预测、数据分析</p></div>'
-            };
-            
-            // 页面标题映射
-            const pageTitles = {
-                'home': '首页',
-                'super-chat': '超级对话',
-                'super-agent': '超级Agent',
-                'super-intelligence': '超级智能体',
-                'image-generation': '图像生成',
-                'ai-drawing': 'AI修图',
-                'stock-analysis': '股票分析',
-                '3d-models': '3D模型',
-                'video-generation': '视频生成',
-                'suno-music': 'Suno音乐',
-                'recent-hot': '近期热门',
-                'super-ai-search': '超级AI搜索',
-                'beautiful-ppt': '精美PPT',
-                'audio-processing': '音频处理',
-                'ai-voice': 'AI声音',
-                'document-processing': '文档处理',
-                'ai-treasure-box': 'AI百宝箱',
-                'ai-design': 'AI设计',
-                'smart-charts': '智能图表',
-                'writing-assistant': '写作助手',
-                'online-translation': '在线翻译',
-                'article-aigc': '文章AIGC',
-                'more-functions': '更多功能',
-                '1000-functions': '1000+功能',
-                'pdf-tools': 'PDF工具',
-                'search-tools': '搜索AI工具',
-                'download-client': '下载客户端'
-            };
-            
-            // 为每个导航卡片添加点击事件
-            navCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // 移除所有卡片的激活状态
-                    navCards.forEach(c => c.classList.remove('active'));
-                    
-                    // 添加当前卡片的激活状态
-                    this.classList.add('active');
-                    
-                    // 获取页面标识
-                    const pageId = this.getAttribute('data-page');
-                    
-                    // 更新页面标题
-                    pageTitle.textContent = pageTitles[pageId] || 'AI好伴';
-                    
-                    // 更新页面内容
-                    if (pageTemplates[pageId]) {
-                        pageContent.innerHTML = pageTemplates[pageId];
-                    } else {
-                        // 默认页面内容
-                        pageContent.innerHTML = `
-                            <div class="page-placeholder">
-                                <h3><i></i> ${pageTitles[pageId] || '功能页面'}</h3>
-                                <p>功能开发中，敬请期待...</p>
-                                <div class="placeholder-image">
-                                    <img src="images/placeholder.jpg" alt="占位图" onerror="this.style.display='none'">
+
+                            <!-- 导航卡片 -->
+                            <div style="flex: 1; overflow-y: auto; padding: 20px 16px;">
+                                <!-- 第一组：核心功能区 -->
+                                <div style="margin-bottom: 20px;">
+                                    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px; padding-left: 12px;">核心功能</div>
+                                    ${createNavItem('🏠', '首页', true)}
+                                    ${createNavItem('💬', '超级对话')}
+                                    ${createNavItem('🤖', '超级Agent')}
+                                    ${createNavItem('🧠', '超级智能体')}
+                                    ${createNavItem('🖼️', '图像生成')}
+                                    ${createNavItem('🎨', 'AI修图')}
+                                    ${createNavItem('📈', '股票分析')}
+                                </div>
+
+                                <!-- 第二组：工具箱 -->
+                                <div style="margin-bottom: 20px;">
+                                    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px; padding-left: 12px;">工具箱</div>
+                                    ${createNavItem('🧊', '3D模型')}
+                                    ${createNavItem('🎬', '视频生成')}
+                                    ${createNavItem('🎵', 'Suno音乐')}
+                                    ${createNavItem('🔥', '近期热门')}
+                                    ${createNavItem('🔍', '超级AI搜索')}
+                                    ${createNavItem('📊', '精美PPT')}
+                                    ${createNavItem('🔊', '音频处理')}
+                                    ${createNavItem('🎤', 'AI声音')}
+                                    ${createNavItem('📄', '文档处理')}
+                                    ${createNavItem('🧰', 'AI百宝箱')}
+                                    ${createNavItem('🎨', 'AI设计')}
+                                    ${createNavItem('📊', '智能图表')}
+                                </div>
+
+                                <!-- 第三组：热门功能 -->
+                                <div style="margin-bottom: 20px;">
+                                    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px; padding-left: 12px;">热门功能</div>
+                                    ${createNavItem('✍️', '写作助手')}
+                                    ${createNavItem('🌐', '在线翻译')}
+                                    ${createNavItem('📰', '文章AIGC')}
+                                    ${createNavItem('⋯', '更多功能')}
+                                    ${createNavItem('∞', '1000+功能', false, true)}
+                                </div>
+
+                                <!-- 底部功能区 -->
+                                <div style="margin-top: auto;">
+                                    <div style="padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                                        ${createNavItem('📄', 'PDF工具')}
+                                        ${createNavItem('🔎', '搜索1000+个AI工具')}
+                                        ${createNavItem('⬇️', '下载客户端')}
+                                    </div>
                                 </div>
                             </div>
-                        `;
-                    }
-                });
-            });
-            
-            // 主题切换
-            const themeToggle = document.querySelector('.theme-toggle');
-            themeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('dark-mode');
-                const icon = this.querySelector('i');
-                // 图标会在CSS中自动切换
-            });
-            
-            // 升级按钮点击
-            const upgradeBtn = document.querySelector('.upgrade-btn');
-            upgradeBtn.addEventListener('click', function() {
-                alert('会员升级功能即将开放，敬请期待！');
-            });
-            
-            // 搜索功能
-            const searchBtn = document.querySelector('.search-btn');
-            const searchInput = document.querySelector('.search-bar input');
-            
-            searchBtn.addEventListener('click', function() {
-                const query = searchInput.value.trim();
-                if (query) {
-                    pageContent.innerHTML = `
-                        <div class="page-placeholder">
-                            <h3>搜索结果</h3>
-                            <p>搜索关键词: "${query}"</p>
-                            <p>搜索结果功能开发中...</p>
+
+                            <!-- 用户信息 -->
+                            <div style="display: flex; align-items: center; padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background: #60a5fa; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 20px;">👤</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 15px;">用户</div>
+                                    <div style="font-size: 12px; color: #94a3b8;">免费版</div>
+                                </div>
+                                <div style="font-size: 18px; cursor: pointer;">⚙️</div>
+                            </div>
                         </div>
-                    `;
-                    pageTitle.textContent = '搜索结果';
-                }
-            });
-            
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchBtn.click();
-                }
-            });
-            
-            // 页面加载完成，移除可能的加载状态
-            document.body.style.visibility = 'visible';
-        });
-        
-        // 防止页面加载缓慢
-        setTimeout(() => {
-            if (document.readyState !== 'complete') {
+
+                        <!-- 右侧主内容区 -->
+                        <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                            <!-- 顶部工具栏 -->
+                            <div style="height: 70px; background: white; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                <!-- 搜索框 -->
+                                <div style="display: flex; align-items: center; background: #f1f5f9; border-radius: 50px; padding: 8px 16px; width: 400px;">
+                                    <span style="color: #64748b; margin-right: 10px;">🔍</span>
+                                    <input type="text" placeholder="搜索AI工具或功能..." style="border: none; background: transparent; flex: 1; font-size: 15px; color: #334155; outline: none;">
+                                    <button style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; border-radius: 50px; padding: 8px 20px; font-weight: 600; cursor: pointer; margin-left: 10px;">搜索</button>
+                                </div>
+                                
+                                <!-- 工具栏右侧 -->
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <span>🪙</span>
+                                        <span style="font-weight: 600; font-size: 15px;">1500 积分</span>
+                                    </div>
+                                    <div style="position: relative; cursor: pointer;">
+                                        <span>🔔</span>
+                                        <span style="position: absolute; top: -5px; right: -8px; background: #ef4444; color: white; font-size: 11px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">3</span>
+                                    </div>
+                                    <div style="font-size: 18px; cursor: pointer;">🌙</div>
+                                    <button style="background: linear-gradient(90deg, #f59e0b, #f97316); color: white; border: none; border-radius: 8px; padding: 10px 18px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                        <span>👑</span>
+                                        升级会员
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 内容展示区 -->
+                            <div style="flex: 1; overflow-y: auto; padding: 24px; background: #f8fafc;">
+                                <!-- 页面标题和操作 -->
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                                    <h2 style="font-size: 28px; font-weight: 700; color: #1e293b; margin: 0;">首页</h2>
+                                    <div style="display: flex; gap: 12px;">
+                                        <button style="display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 16px; font-weight: 500; cursor: pointer;">
+                                            <span>➕</span>
+                                            新建
+                                        </button>
+                                        <button style="display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 16px; font-weight: 500; cursor: pointer;">
+                                            <span>📜</span>
+                                            历史记录
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 欢迎内容 -->
+                                <div style="text-align: center; padding: 60px 20px; max-width: 800px; margin: 0 auto;">
+                                    <div style="font-size: 80px; color: #60a5fa; margin-bottom: 24px;">🚀</div>
+                                    <h3 style="font-size: 36px; margin-bottom: 16px; color: #1e293b;">欢迎使用 AI好伴</h3>
+                                    <p style="font-size: 18px; color: #64748b; margin-bottom: 8px;">请从左侧导航选择您需要的AI功能</p>
+                                    <p style="font-size: 16px; color: #64748b; margin-bottom: 40px;">集大成于一身的AI工具集合，支持1000+种AI功能</p>
+                                    
+                                    <div style="display: flex; justify-content: center; gap: 24px; margin-top: 40px;">
+                                        <div style="background: white; border-radius: 12px; padding: 24px; width: 240px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                            <div style="font-size: 36px; color: #60a5fa; margin-bottom: 16px;">🤖</div>
+                                            <h4 style="font-size: 18px; margin-bottom: 12px; color: #1e293b;">DeepSeek专线</h4>
+                                            <p style="font-size: 14px; color: #64748b; line-height: 1.5;">AI搜索、AI写作、图像生成、AI阅读等</p>
+                                        </div>
+                                        <div style="background: white; border-radius: 12px; padding: 24px; width: 240px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                            <div style="font-size: 36px; color: #60a5fa; margin-bottom: 16px;">🧠</div>
+                                            <h4 style="font-size: 18px; margin-bottom: 12px; color: #1e293b;">40+模型支持</h4>
+                                            <p style="font-size: 14px; color: #64748b; line-height: 1.5;">GT-40-mini、边界GT-4.0、GPT-4等</p>
+                                        </div>
+                                        <div style="background: white; border-radius: 12px; padding: 24px; width: 240px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                            <div style="font-size: 36px; color: #60a5fa; margin-bottom: 16px;">✨</div>
+                                            <h4 style="font-size: 18px; margin-bottom: 12px; color: #1e293b;">智能工具箱</h4>
+                                            <p style="font-size: 14px; color: #64748b; line-height: 1.5;">文档处理、音频处理、AI设计等</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        /* 导航项样式 */
+                        .nav-item {
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                            padding: 14px 16px;
+                            border-radius: 10px;
+                            margin-bottom: 6px;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            color: #cbd5e1;
+                            background: rgba(255, 255, 255, 0.08);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                        }
+                        
+                        .nav-item:hover {
+                            background: rgba(255, 255, 255, 0.15);
+                            color: white;
+                            transform: translateX(5px);
+                        }
+                        
+                        .nav-item.active {
+                            background: rgba(99, 102, 241, 0.25);
+                            color: white;
+                            border-left: 4px solid #60a5fa;
+                        }
+                        
+                        .nav-item.highlight {
+                            background: rgba(96, 165, 250, 0.15);
+                            border: 1px solid rgba(96, 165, 250, 0.3);
+                        }
+                        
+                        .nav-item span {
+                            font-size: 15px;
+                            font-weight: 500;
+                        }
+                        
+                        .nav-item .icon {
+                            font-size: 18px;
+                            width: 24px;
+                            text-align: center;
+                        }
+                        
+                        /* 滚动条样式 */
+                        ::-webkit-scrollbar {
+                            width: 6px;
+                        }
+                        
+                        ::-webkit-scrollbar-track {
+                            background: rgba(0, 0, 0, 0.1);
+                            border-radius: 3px;
+                        }
+                        
+                        ::-webkit-scrollbar-thumb {
+                            background: rgba(255, 255, 255, 0.3);
+                            border-radius: 3px;
+                        }
+                        
+                        ::-webkit-scrollbar-thumb:hover {
+                            background: rgba(255, 255, 255, 0.4);
+                        }
+                        
+                        /* 交互效果 */
+                        button:hover, .nav-item:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        }
+                        
+                        input:focus {
+                            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+                        }
+                    </style>
+
+                    <script>
+                        // 导航点击功能
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // 导航项点击事件
+                            const navItems = document.querySelectorAll('.nav-item');
+                            const pageTitle = document.querySelector('h2');
+                            const contentArea = document.querySelector('div[style*="text-align: center"]').parentElement;
+                            
+                            navItems.forEach(item => {
+                                item.addEventListener('click', function() {
+                                    // 移除所有激活状态
+                                    navItems.forEach(i => {
+                                        i.classList.remove('active');
+                                        i.classList.remove('active');
+                                    });
+                                    
+                                    // 添加当前激活状态
+                                    this.classList.add('active');
+                                    
+                                    // 获取页面名称
+                                    const pageName = this.querySelector('span').textContent;
+                                    
+                                    // 更新页面标题
+                                    pageTitle.textContent = pageName;
+                                    
+                                    // 更新页面内容
+                                    if (pageName === '首页') {
+                                        contentArea.innerHTML = \`
+                                            <div style="text-align: center; padding: 60px 20px; max-width: 800px; margin: 0 auto;">
+                                                <div style="font-size: 80px; color: #60a5fa; margin-bottom: 24px;">🚀</div>
+                                                <h3 style="font-size: 36px; margin-bottom: 16px; color: #1e293b;">欢迎使用 AI好伴</h3>
+                                                <p style="font-size: 18px; color: #64748b; margin-bottom: 8px;">请从左侧导航选择您需要的AI功能</p>
+                                                <p style="font-size: 16px; color: #64748b; margin-bottom: 40px;">集大成于一身的AI工具集合，支持1000+种AI功能</p>
+                                                
+                                                <div style="display: flex; justify-content: center; gap: 24px; margin-top: 40px;">
+                                                    <div style="background: white; border-radius: 12px; padding: 24px; width: 240px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                                        <div style="font-size: 36px; color: #60a5fa; margin-bottom: 16px;">🤖</div>
+                                                        <h4 style="font-size: 18px; margin-bottom: 12px; color: #1e293b;">DeepSeek专线</h4>
+                                                        <p style="font-size: 14px; color: #64748b; line-height: 1.5;">AI搜索、AI写作、图像生成、AI阅读等</p>
+                                                    </div>
+                                                    <div style="background: white; border-radius: 12px; padding: 24px; width: 240px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                                        <div style="font-size: 36px; color: #60a5fa; margin-bottom: 16px;">🧠</div>
+                                                        <h4 style="font-size: 18px; margin-bottom: 12px; color: #1e293b;">40+模型支持</h4>
+                                                        <p style="font-size: 14px; color: #64748b; line-height: 1.5;">GT-40-mini、边界GT-4.0、GPT-4等</p>
+                                                    </div>
+                                                    <div style="background: white; border-radius: 12px; padding: 24px; width: 240px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                                        <div style="font-size: 36px; color: #60a5fa; margin-bottom: 16px;">✨</div>
+                                                        <h4 style="font-size: 18px; margin-bottom: 12px; color: #1e293b;">智能工具箱</h4>
+                                                        <p style="font-size: 14px; color: #64748b; line-height: 1.5;">文档处理、音频处理、AI设计等</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        \`;
+                                    } else {
+                                        contentArea.innerHTML = \`
+                                            <div style="text-align: center; padding: 100px 20px;">
+                                                <div style="font-size: 60px; color: #60a5fa; margin-bottom: 24px;">\${this.querySelector('.icon').textContent}</div>
+                                                <h3 style="font-size: 32px; margin-bottom: 16px; color: #1e293b;">\${pageName}</h3>
+                                                <p style="font-size: 16px; color: #64748b; margin-bottom: 24px;">功能即将开放，敬请期待...</p>
+                                                <div style="max-width: 400px; margin: 0 auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                                    <p style="color: #64748b; font-size: 14px;">我们正在全力开发此功能，将为您提供最佳的AI体验。</p>
+                                                </div>
+                                            </div>
+                                        \`;
+                                    }
+                                });
+                            });
+                            
+                            // 主题切换
+                            const themeToggle = document.querySelector('div[style*="font-size: 18px; cursor: pointer"]');
+                            themeToggle.addEventListener('click', function() {
+                                const icon = this.querySelector('span');
+                                if (icon.textContent === '🌙') {
+                                    icon.textContent = '☀️';
+                                    document.body.style.backgroundColor = '#0f172a';
+                                    document.body.style.color = '#f1f5f9';
+                                } else {
+                                    icon.textContent = '🌙';
+                                    document.body.style.backgroundColor = '#f5f7fa';
+                                    document.body.style.color = '#333';
+                                }
+                            });
+                            
+                            // 搜索功能
+                            const searchBtn = document.querySelector('button[style*="background: linear-gradient"]');
+                            const searchInput = document.querySelector('input[placeholder*="搜索"]');
+                            
+                            searchBtn.addEventListener('click', function() {
+                                const query = searchInput.value.trim();
+                                if (query) {
+                                    contentArea.innerHTML = \`
+                                        <div style="padding: 40px;">
+                                            <h3 style="font-size: 24px; margin-bottom: 20px; color: #1e293b;">搜索结果: "\${query}"</h3>
+                                            <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                                <p style="color: #64748b;">搜索功能即将上线，请稍后重试...</p>
+                                            </div>
+                                        </div>
+                                    \`;
+                                    pageTitle.textContent = '搜索结果';
+                                }
+                            });
+                            
+                            searchInput.addEventListener('keypress', function(e) {
+                                if (e.key === 'Enter') {
+                                    searchBtn.click();
+                                }
+                            });
+                            
+                            // 升级按钮
+                            const upgradeBtn = document.querySelector('button[style*="background: linear-gradient(90deg"]');
+                            upgradeBtn.addEventListener('click', function() {
+                                alert('会员升级功能即将开放！');
+                            });
+                        });
+                    </script>
+                </body>
+                </html>
+                `;
+                
+                // 插入到页面
+                document.body.innerHTML = html;
+                
+                // 立即显示
                 document.body.style.visibility = 'visible';
-                console.log('强制显示页面');
+            }, 50);
+            
+            // 创建导航项函数
+            function createNavItem(icon, text, active = false, highlight = false) {
+                const activeClass = active ? 'active' : '';
+                const highlightClass = highlight ? 'highlight' : '';
+                return \`
+                    <div class="nav-item \${activeClass} \${highlightClass}">
+                        <div class="icon">\${icon}</div>
+                        <span>\${text}</span>
+                    </div>
+                \`;
             }
-        }, 1000);
+        })();
     </script>
 </body>
 </html>
