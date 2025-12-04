@@ -1,102 +1,80 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>AI好伴 - 一站式AI智能平台</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<title>AI好伴 - 一站式AI智能平台</title>
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:"Microsoft YaHei",Arial,sans-serif;background:#f5f7fa;}
+    .layout{display:flex;width:100%;height:100vh;}
 
-        body {
-            font-family: "Microsoft YaHei", Arial, sans-serif;
-            background: #f5f7fa;
-        }
+    .sidebar{
+        width:260px;
+        background:#1f1f1f;
+        color:#fff;
+        padding:20px 0;
+    }
+    .logo{
+        text-align:center;
+        font-size:22px;
+        padding:20px;
+        font-weight:bold;
+        border-bottom:1px solid #333;
+    }
 
-        .layout {
-            display: flex;
-            width: 100%;
-            height: 100vh;
-        }
+    .nav-item{
+        padding:15px 20px;
+        cursor:pointer;
+        transition:0.2s;
+    }
+    .nav-item:hover{background:#333;}
+    .nav-item.active{background:#1890ff;}
 
-        /* 左侧导航 */
-        .sidebar {
-            width: 20%;
-            min-width: 260px;
-            background: #1f1f1f;
-            color: #fff;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-        }
+    .content{
+        flex:1;
+        background:#fff;
+        padding:40px;
+        overflow-y:auto;
+    }
 
-        .logo {
-            font-size: 22px;
-            text-align: center;
-            padding: 20px 0;
-            font-weight: bold;
-            border-bottom: 1px solid #333;
-            margin-bottom: 10px;
-        }
+    .page{display:none;}
+    .page.active{display:block;}
 
-        .nav-item {
-            padding: 14px 20px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-        }
+    .card{
+        background:#f8f9fb;
+        padding:20px;
+        border-radius:10px;
+        margin-top:20px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    }
 
-        .nav-item:hover {
-            background: #333;
-        }
+    input, select, button{
+        width:100%;
+        padding:10px;
+        margin-top:10px;
+        margin-bottom:15px;
+    }
 
-        .nav-item.active {
-            background: #1890ff;
-        }
+    button{
+        background:#1890ff;
+        border:none;
+        color:#fff;
+        cursor:pointer;
+    }
 
-        /* 右侧内容 */
-        .content {
-            width: 80%;
-            padding: 40px;
-            background: #ffffff;
-            overflow-y: auto;
-        }
-
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        h1 {
-            color: #1890ff;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: #f8f9fb;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        .tips {
-            color: #666;
-            line-height: 1.6;
-        }
-    </style>
+    img{
+        margin-top:15px;
+        max-width:100%;
+        border-radius:8px;
+    }
+</style>
 </head>
+
 <body>
 
 <div class="layout">
 
-    <!-- 左侧导航栏 -->
+    <!-- 左侧导航 -->
     <div class="sidebar">
         <div class="logo">🚀 AI好伴</div>
 
@@ -109,107 +87,104 @@
         <div class="nav-item" onclick="showPage('paper', this)">论文助手</div>
     </div>
 
-    <!-- 右侧内容区 -->
+    <!-- 右侧内容 -->
     <div class="content">
 
         <!-- 首页 -->
         <div id="home" class="page active">
             <h1>欢迎来到 AI好伴</h1>
-
             <div class="card">
-                <h3>为什么选择 AI好伴？</h3>
-                <p class="tips">
-                    AI好伴是一个强大的 AI 工具整合与生成平台，支持图像、视频、声音、PPT、论文、搜索等多种AI能力。
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>如何开始？</h3>
-                <p class="tips">
-                    点击左侧的任意功能卡片，例如：<b>图像生成 / 视频生成 / AI声音</b> 即可开始体验。
-                </p>
+                <p>这里是你的 AI 一站式平台总入口。</p>
+                <p>请点击左侧：图像生成 开始体验。</p>
             </div>
         </div>
 
         <!-- 图像生成 -->
         <div id="image" class="page">
             <h1>图像生成</h1>
+
             <div class="card">
-                <p class="tips">
-                    这里将接入：文生图 / 图生图 / AI绘画 等功能。
-                </p>
-                <p class="tips">（下一步我会给你补完整功能区）</p>
+
+                <label>选择模型：</label>
+                <select id="modelSelect">
+                    <option value="Stable Diffusion">Stable Diffusion</option>
+                    <option value="DALL·E">DALL·E</option>
+                    <option value="MidJourney">MidJourney</option>
+                </select>
+
+                <label>输入提示词：</label>
+                <input type="text" id="promptInput" placeholder="例如：一个美女模特在咖啡馆，写实风格">
+
+                <button onclick="generateImage()">开始生成图片</button>
+
+                <div id="result"></div>
+
             </div>
         </div>
 
-        <!-- 视频生成 -->
+        <!-- 其他页面 -->
         <div id="video" class="page">
             <h1>视频生成</h1>
-            <div class="card">
-                <p class="tips">
-                    这里将实现：图生视频 / 换脸 / AI数字人 等功能。
-                </p>
-            </div>
+            <div class="card">功能即将上线</div>
         </div>
 
-        <!-- AI声音 -->
         <div id="voice" class="page">
             <h1>AI声音</h1>
-            <div class="card">
-                <p class="tips">
-                    这里将实现：语音合成 / 声音克隆 / 音频生成。
-                </p>
-            </div>
+            <div class="card">功能即将上线</div>
         </div>
 
-        <!-- 超级AI搜索 -->
         <div id="search" class="page">
             <h1>超级AI搜索</h1>
-            <div class="card">
-                <p class="tips">
-                    学术 / 网盘 / 文件 / 网站 四大AI搜索引擎
-                </p>
-            </div>
+            <div class="card">功能即将上线</div>
         </div>
 
-        <!-- PPT -->
         <div id="ppt" class="page">
             <h1>精美PPT</h1>
-            <div class="card">
-                <p class="tips">
-                    一键快速生成专业级PPT
-                </p>
-            </div>
+            <div class="card">功能即将上线</div>
         </div>
 
-        <!-- 论文助手 -->
         <div id="paper" class="page">
             <h1>论文助手</h1>
-            <div class="card">
-                <p class="tips">
-                    帮助你生成论文大纲、正文、参考文献
-                </p>
-            </div>
+            <div class="card">功能即将上线</div>
         </div>
 
     </div>
 </div>
 
 <script>
-    function showPage(pageId, element) {
+function showPage(id, element){
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(p=>p.classList.remove('active'));
 
-        // 全部内容隐藏
-        const pages = document.querySelectorAll('.page');
-        pages.forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
 
-        // 显示当前
-        document.getElementById(pageId).classList.add('active');
+    const navs = document.querySelectorAll('.nav-item');
+    navs.forEach(n=>n.classList.remove('active'));
 
-        // 导航高亮
-        const navs = document.querySelectorAll('.nav-item');
-        navs.forEach(n => n.classList.remove('active'));
-        element.classList.add('active');
+    element.classList.add('active');
+}
+
+function generateImage(){
+    const model = document.getElementById("modelSelect").value;
+    const prompt = document.getElementById("promptInput").value;
+
+    if(prompt === ""){
+        alert("请输入提示词");
+        return;
     }
+
+    const result = document.getElementById("result");
+
+    result.innerHTML = "正在生成中，请稍等...";
+
+    setTimeout(()=>{
+        result.innerHTML = `
+            <p>✅ 生成成功</p>
+            <p>模型：${model}</p>
+            <img src="https://via.placeholder.com/512x512.png?text=AI+Image" />
+        `;
+    },1500)
+}
 </script>
 
 </body>
