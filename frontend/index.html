@@ -110,26 +110,27 @@
     </div>
 
     <!-- 右侧内容区 -->
-    <div class="content">
+    <!-- 图像生成 -->
+<div id="image" class="page">
+    <h1>图像生成</h1>
 
-        <!-- 首页 -->
-        <div id="home" class="page active">
-            <h1>欢迎来到 AI好伴</h1>
+    <div class="card">
+        <label>选择模型：</label>
+        <select id="modelSelect">
+            <option value="sd">Stable Diffusion</option>
+            <option value="dalle">DALL·E</option>
+            <option value="mj">MidJourney</option>
+        </select>
 
-            <div class="card">
-                <h3>为什么选择 AI好伴？</h3>
-                <p class="tips">
-                    AI好伴是一个强大的 AI 工具整合与生成平台，支持图像、视频、声音、PPT、论文、搜索等多种AI能力。
-                </p>
-            </div>
+        <label>输入提示词（中文）：</label>
+        <input type="text" id="promptInput" placeholder="例如：一个美女模特在咖啡馆，写实风格，8K">
 
-            <div class="card">
-                <h3>如何开始？</h3>
-                <p class="tips">
-                    点击左侧的任意功能卡片，例如：<b>图像生成 / 视频生成 / AI声音</b> 即可开始体验。
-                </p>
-            </div>
-        </div>
+        <button onclick="generateImage()">生成图片</button>
+
+        <div class="result" id="result"></div>
+    </div>
+</div>
+
 
         <!-- 图像生成 -->
         <div id="image" class="page">
@@ -211,6 +212,22 @@
         element.classList.add('active');
     }
 </script>
+function generateImage() {
+    const model = document.getElementById('modelSelect').value;
+    const prompt = document.getElementById('promptInput').value.trim();
+    if(!prompt) { alert('请输入提示词'); return; }
+
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '<p>正在生成图片...</p>';
+
+    // 这里是预留 API 调用位置
+    // 你后续只需在下面 fetch URL 填入你的后台接口
+    setTimeout(() => {
+        // 模拟生成图片
+        resultDiv.innerHTML = `<p>生成成功！模型：${model}</p>
+        <img src="https://via.placeholder.com/512x512.png?text=AI+生成图像" alt="生成图像">`;
+    }, 1000);
+}
 
 </body>
 </html>
