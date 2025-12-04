@@ -2,191 +2,270 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>AI好伴 - 一站式AI智能平台</title>
+<title>AI好伴 - 文生图</title>
 <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:"Microsoft YaHei",Arial,sans-serif;background:#f5f7fa;}
-    .layout{display:flex;width:100%;height:100vh;}
+/* 页面全局 */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Microsoft YaHei",Arial,sans-serif;background:#f5f7fa;min-width:1200px;}
+.layout{display:flex;width:80%;margin:0 auto;padding:24px 0;min-width:1200px;}
 
-    .sidebar{
-        width:260px;
-        background:#1f1f1f;
-        color:#fff;
-        padding:20px 0;
-    }
-    .logo{
-        text-align:center;
-        font-size:22px;
-        padding:20px;
-        font-weight:bold;
-        border-bottom:1px solid #333;
-    }
+/* 左侧功能区 60% */
+.sidebar{width:60%;padding-right:24px;}
 
-    .nav-item{
-        padding:15px 20px;
-        cursor:pointer;
-        transition:0.2s;
-    }
-    .nav-item:hover{background:#333;}
-    .nav-item.active{background:#1890ff;}
+/* 主标题区 */
+.title-card{height:80px;margin-bottom:24px;}
+.title-card h1{font-size:28px;font-weight:bold;}
+.title-card p{font-size:14px;color:#555;}
 
-    .content{
-        flex:1;
-        background:#fff;
-        padding:40px;
-        overflow-y:auto;
-    }
+/* 卡片通用样式 */
+.card{background:#fff;padding:24px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:24px;}
 
-    .page{display:none;}
-    .page.active{display:block;}
+/* 文本输入区域 */
+.text-area{height:180px;margin-bottom:24px;}
+.text-area label{font-size:14px;font-weight:bold;}
+.text-area textarea{width:100%;height:120px;padding:8px;margin-top:8px;font-size:14px;resize:none;}
+.char-count{text-align:right;font-size:12px;color:#888;margin-top:4px;}
+.quick-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.quick-buttons button{width:160px;height:32px;font-size:12px;cursor:pointer;}
 
-    .card{
-        background:#f8f9fb;
-        padding:20px;
-        border-radius:10px;
-        margin-top:20px;
-        box-shadow:0 2px 8px rgba(0,0,0,0.05);
-    }
+/* 风格选择 */
+.style-area{height:100px;margin-bottom:24px;}
+.style-area label{font-size:14px;font-weight:bold;}
+.style-area select{width:100%;height:40px;font-size:14px;margin-top:8px;}
 
-    input, select, button{
-        width:100%;
-        padding:10px;
-        margin-top:10px;
-        margin-bottom:15px;
-    }
+/* 尺寸与质量 */
+.size-quality{display:flex;justify-content:space-between;height:140px;margin-bottom:24px;}
+.size-quality .size,.size-quality .quality{width:48%;}
+.size-quality select,.size-quality input[type=range]{width:100%;height:40px;margin-top:8px;}
 
-    button{
-        background:#1890ff;
-        border:none;
-        color:#fff;
-        cursor:pointer;
-    }
+/* 高级设置折叠 */
+.advanced{height:120px;margin-bottom:24px;position:relative;}
+.advanced-toggle{cursor:pointer;font-weight:bold;margin-bottom:8px;}
+.advanced-content{display:none;}
+.advanced-content input[type=text],.advanced-content input[type=range]{width:200px;margin-top:4px;}
 
-    img{
-        margin-top:15px;
-        max-width:100%;
-        border-radius:8px;
-    }
+/* 按钮区域 */
+.button-area{height:100px;display:flex;align-items:center;gap:24px;}
+.button-area button{cursor:pointer;}
+#generateBtn{width:672px;height:48px;background:#1890ff;color:#fff;border:none;border-radius:6px;font-size:16px;}
+#downloadBtn{width:200px;height:40px;background:#52c41a;color:#fff;border:none;border-radius:6px;font-size:14px;display:none;}
+
+/* 右侧展示区 40% */
+.display{width:40%;padding-left:24px;}
+
+/* 生成结果卡片 */
+.result-card{width:480px;height:600px;margin-bottom:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid #eee;border-radius:10px;background:#fafafa;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.result-card img{width:432px;height:324px;border-radius:8px;object-fit:cover;margin-top:16px;}
+.result-buttons{height:72px;display:flex;justify-content:center;align-items:center;gap:16px;margin-top:16px;}
+.result-buttons button{width:140px;height:40px;border:none;border-radius:6px;background:#1890ff;color:#fff;cursor:pointer;}
+
+/* 热门案例 */
+.popular{width:480px;height:320px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:8px;}
+.popular-item{text-align:center;font-size:12px;}
+.popular-item img{width:128px;height:96px;border-radius:4px;transition:transform 0.2s;}
+.popular-item img:hover{transform:scale(1.1);}
+
+/* 使用技巧卡片 */
+.tips-card{display:flex;gap:16px;}
+.tip{width:168px;text-align:center;}
+.tip img{width:32px;height:32px;margin-bottom:8px;}
+.tip-title{font-size:14px;font-weight:bold;margin-bottom:4px;}
+.tip-desc{font-size:12px;line-height:1.4;}
+
 </style>
 </head>
-
 <body>
-
 <div class="layout">
-
-    <!-- 左侧导航 -->
+    <!-- 左侧功能区 -->
     <div class="sidebar">
-        <div class="logo">🚀 AI好伴</div>
+        <!-- 主标题 -->
+        <div class="title-card">
+            <h1>文生图创作</h1>
+            <p>请输入描述，选择风格和尺寸，生成专属AI图像</p>
+        </div>
 
-        <div class="nav-item active" onclick="showPage('home', this)">首页</div>
-        <div class="nav-item" onclick="showPage('image', this)">图像生成</div>
-        <div class="nav-item" onclick="showPage('video', this)">视频生成</div>
-        <div class="nav-item" onclick="showPage('voice', this)">AI声音</div>
-        <div class="nav-item" onclick="showPage('search', this)">超级AI搜索</div>
-        <div class="nav-item" onclick="showPage('ppt', this)">精美PPT</div>
-        <div class="nav-item" onclick="showPage('paper', this)">论文助手</div>
+        <!-- 创作设置卡片 -->
+        <div class="card" style="width:720px;height:680px;">
+            <!-- 描述输入 -->
+            <div class="text-area">
+                <label>图像描述</label>
+                <textarea id="descInput" placeholder="详细描述您想要的图像..."></textarea>
+                <div class="char-count" id="charCount">0 / 500</div>
+                <div class="quick-buttons">
+                    <button onclick="insertQuick('未来城市夜景')">未来城市夜景</button>
+                    <button onclick="insertQuick('赛博朋克风')">赛博朋克风</button>
+                    <button onclick="insertQuick('写实风格美女')">写实风格美女</button>
+                    <button onclick="insertQuick('油画静物')">油画静物</button>
+                </div>
+            </div>
+
+            <!-- 风格选择 -->
+            <div class="style-area">
+                <label>艺术风格</label>
+                <select id="styleSelect">
+                    <option value="写实">写实</option>
+                    <option value="动漫">动漫</option>
+                    <option value="油画">油画</option>
+                    <option value="水彩">水彩</option>
+                    <option value="赛博朋克">赛博朋克</option>
+                </select>
+            </div>
+
+            <!-- 尺寸与质量 -->
+            <div class="size-quality">
+                <div class="size">
+                    <label>尺寸选择</label>
+                    <select id="sizeSelect">
+                        <option value="512x512">512×512</option>
+                        <option value="1024x1024">1024×1024</option>
+                        <option value="1024x768">1024×768</option>
+                        <option value="1920x1080">1920×1080</option>
+                    </select>
+                </div>
+                <div class="quality">
+                    <label>质量 (%)</label>
+                    <input type="range" id="qualityRange" min="25" max="100" value="75">
+                    <div id="qualityVal">75%</div>
+                </div>
+            </div>
+
+            <!-- 高级设置折叠 -->
+            <div class="advanced">
+                <div class="advanced-toggle" onclick="toggleAdvanced()">高级设置 ▼</div>
+                <div class="advanced-content" id="advancedContent">
+                    <div>
+                        <label>种子值：</label>
+                        <input type="text" id="seedInput" placeholder="随机或指定数值">
+                    </div>
+                    <div>
+                        <label>去噪强度：</label>
+                        <input type="range" id="denoiseRange" min="25" max="100" value="50">
+                        <div id="denoiseVal">50%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 按钮区域 -->
+            <div class="button-area">
+                <button id="generateBtn" onclick="generateImage()">生成图像 (5积分)</button>
+                <button id="downloadBtn" onclick="downloadImage()">下载高清版</button>
+            </div>
+        </div>
+
+        <!-- 使用技巧卡片 -->
+        <div class="card tips-card" style="width:720px;height:240px;">
+            <div class="tip">
+                <img src="./assets/images/111.jpg" alt="技巧1">
+                <div class="tip-title">具体描述</div>
+                <div class="tip-desc">详细描述图像的内容</div>
+            </div>
+            <div class="tip">
+                <img src="./assets/images/111.jpg" alt="技巧2">
+                <div class="tip-title">风格参考</div>
+                <div class="tip-desc">选择合适艺术风格</div>
+            </div>
+            <div class="tip">
+                <img src="./assets/images/111.jpg" alt="技巧3">
+                <div class="tip-title">构图建议</div>
+                <div class="tip-desc">参考经典构图方法</div>
+            </div>
+            <div class="tip">
+                <img src="./assets/images/111.jpg" alt="技巧4">
+                <div class="tip-title">氛围营造</div>
+                <div class="tip-desc">注意光影与环境</div>
+            </div>
+        </div>
     </div>
 
-    <!-- 右侧内容 -->
-    <div class="content">
-
-        <!-- 首页 -->
-        <div id="home" class="page active">
-            <h1>欢迎来到 AI好伴</h1>
-            <div class="card">
-                <p>这里是你的 AI 一站式平台总入口。</p>
-                <p>请点击左侧：图像生成 开始体验。</p>
+    <!-- 右侧展示区 -->
+    <div class="display">
+        <!-- 生成结果 -->
+        <div class="result-card" id="resultCard">
+            <h2>生成结果</h2>
+            <p>等待生成图像</p>
+            <p>在左侧输入描述并点击生成</p>
+            <img id="resultImg" src="./assets/images/111.jpg" alt="生成结果">
+            <div class="result-buttons">
+                <button onclick="generateImage()">重新生成</button>
+                <button id="resultDownloadBtn" onclick="downloadImage()">下载高清版</button>
             </div>
         </div>
 
-        <!-- 图像生成 -->
-        <div id="image" class="page">
-            <h1>图像生成</h1>
-
-            <div class="card">
-
-                <label>选择模型：</label>
-                <select id="modelSelect">
-                    <option value="Stable Diffusion">Stable Diffusion</option>
-                    <option value="DALL·E">DALL·E</option>
-                    <option value="MidJourney">MidJourney</option>
-                </select>
-
-                <label>输入提示词：</label>
-                <input type="text" id="promptInput" placeholder="例如：一个美女模特在咖啡馆，写实风格">
-
-                <button onclick="generateImage()">开始生成图片</button>
-
-                <div id="result"></div>
-
+        <!-- 热门案例 -->
+        <div class="popular">
+            <div class="popular-item">
+                <img src="./assets/images/111.jpg" alt="案例1">
+                <div>未来城市夜景</div>
+            </div>
+            <div class="popular-item">
+                <img src="./assets/images/111.jpg" alt="案例2">
+                <div>赛博朋克风</div>
+            </div>
+            <div class="popular-item">
+                <img src="./assets/images/111.jpg" alt="案例3">
+                <div>写实美女</div>
+            </div>
+            <div class="popular-item">
+                <img src="./assets/images/111.jpg" alt="案例4">
+                <div>油画静物</div>
+            </div>
+            <div class="popular-item">
+                <img src="./assets/images/111.jpg" alt="案例5">
+                <div>水彩风景</div>
+            </div>
+            <div class="popular-item">
+                <img src="./assets/images/111.jpg" alt="案例6">
+                <div>动漫角色</div>
             </div>
         </div>
-
-        <!-- 其他页面 -->
-        <div id="video" class="page">
-            <h1>视频生成</h1>
-            <div class="card">功能即将上线</div>
-        </div>
-
-        <div id="voice" class="page">
-            <h1>AI声音</h1>
-            <div class="card">功能即将上线</div>
-        </div>
-
-        <div id="search" class="page">
-            <h1>超级AI搜索</h1>
-            <div class="card">功能即将上线</div>
-        </div>
-
-        <div id="ppt" class="page">
-            <h1>精美PPT</h1>
-            <div class="card">功能即将上线</div>
-        </div>
-
-        <div id="paper" class="page">
-            <h1>论文助手</h1>
-            <div class="card">功能即将上线</div>
-        </div>
-
     </div>
 </div>
 
 <script>
-function showPage(id, element){
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(p=>p.classList.remove('active'));
+// 页面交互 JS
+const descInput = document.getElementById('descInput');
+const charCount = document.getElementById('charCount');
+const qualityRange = document.getElementById('qualityRange');
+const qualityVal = document.getElementById('qualityVal');
+const denoiseRange = document.getElementById('denoiseRange');
+const denoiseVal = document.getElementById('denoiseVal');
+const advancedContent = document.getElementById('advancedContent');
+let advancedOpen = false;
 
-    document.getElementById(id).classList.add('active');
+descInput.addEventListener('input',()=>{charCount.textContent = `${descInput.value.length} / 500`});
+qualityRange.addEventListener('input',()=>{qualityVal.textContent = `${qualityRange.value}%`});
+denoiseRange.addEventListener('input',()=>{denoiseVal.textContent = `${denoiseRange.value}%`});
 
-    const navs = document.querySelectorAll('.nav-item');
-    navs.forEach(n=>n.classList.remove('active'));
+function insertQuick(text){descInput.value = text; charCount.textContent = `${text.length} / 500`;}
 
-    element.classList.add('active');
+// 高级设置折叠
+function toggleAdvanced(){
+    advancedOpen = !advancedOpen;
+    advancedContent.style.display = advancedOpen ? 'block' : 'none';
 }
 
+// 生成图像
 function generateImage(){
-    const model = document.getElementById("modelSelect").value;
-    const prompt = document.getElementById("promptInput").value;
+    const desc = descInput.value || "默认示例图像";
+    const style = document.getElementById('styleSelect').value;
+    const size = document.getElementById('sizeSelect').value;
+    const quality = qualityRange.value;
 
-    if(prompt === ""){
-        alert("请输入提示词");
-        return;
-    }
+    const resultImg = document.getElementById('resultImg');
+    resultImg.src = "./assets/images/111.jpg"; // 这里可换成实际生成图API返回
 
-    const result = document.getElementById("result");
+    // 显示下载按钮
+    document.getElementById('downloadBtn').style.display = 'inline-block';
+    document.getElementById('resultDownloadBtn').style.display = 'inline-block';
+}
 
-    result.innerHTML = "正在生成中，请稍等...";
-
-    setTimeout(()=>{
-        result.innerHTML = `
-            <p>✅ 生成成功</p>
-            <p>模型：${model}</p>
-            <img src="./assets/images/111.jpg" alt="AI生成图片" style="width:512px;height:512px;" />
-
-        `;
-    },1500)
+// 下载图片
+function downloadImage(){
+    const link = document.createElement('a');
+    link.href = document.getElementById('resultImg').src;
+    link.download = 'AI生成图.jpg';
+    link.click();
 }
 </script>
-
 </body>
 </html>
