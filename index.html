@@ -1,271 +1,930 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<title>AI好伴 - 文生图</title>
-<style>
-/* 页面全局 */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:"Microsoft YaHei",Arial,sans-serif;background:#f5f7fa;min-width:1200px;}
-.layout{display:flex;width:80%;margin:0 auto;padding:24px 0;min-width:1200px;}
-
-/* 左侧功能区 60% */
-.sidebar{width:60%;padding-right:24px;}
-
-/* 主标题区 */
-.title-card{height:80px;margin-bottom:24px;}
-.title-card h1{font-size:28px;font-weight:bold;}
-.title-card p{font-size:14px;color:#555;}
-
-/* 卡片通用样式 */
-.card{background:#fff;padding:24px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:24px;}
-
-/* 文本输入区域 */
-.text-area{height:180px;margin-bottom:24px;}
-.text-area label{font-size:14px;font-weight:bold;}
-.text-area textarea{width:100%;height:120px;padding:8px;margin-top:8px;font-size:14px;resize:none;}
-.char-count{text-align:right;font-size:12px;color:#888;margin-top:4px;}
-.quick-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
-.quick-buttons button{width:160px;height:32px;font-size:12px;cursor:pointer;}
-
-/* 风格选择 */
-.style-area{height:100px;margin-bottom:24px;}
-.style-area label{font-size:14px;font-weight:bold;}
-.style-area select{width:100%;height:40px;font-size:14px;margin-top:8px;}
-
-/* 尺寸与质量 */
-.size-quality{display:flex;justify-content:space-between;height:140px;margin-bottom:24px;}
-.size-quality .size,.size-quality .quality{width:48%;}
-.size-quality select,.size-quality input[type=range]{width:100%;height:40px;margin-top:8px;}
-
-/* 高级设置折叠 */
-.advanced{height:120px;margin-bottom:24px;position:relative;}
-.advanced-toggle{cursor:pointer;font-weight:bold;margin-bottom:8px;}
-.advanced-content{display:none;}
-.advanced-content input[type=text],.advanced-content input[type=range]{width:200px;margin-top:4px;}
-
-/* 按钮区域 */
-.button-area{height:100px;display:flex;align-items:center;gap:24px;}
-.button-area button{cursor:pointer;}
-#generateBtn{width:672px;height:48px;background:#1890ff;color:#fff;border:none;border-radius:6px;font-size:16px;}
-#downloadBtn{width:200px;height:40px;background:#52c41a;color:#fff;border:none;border-radius:6px;font-size:14px;display:none;}
-
-/* 右侧展示区 40% */
-.display{width:40%;padding-left:24px;}
-
-/* 生成结果卡片 */
-.result-card{width:480px;height:600px;margin-bottom:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid #eee;border-radius:10px;background:#fafafa;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
-.result-card img{width:432px;height:324px;border-radius:8px;object-fit:cover;margin-top:16px;}
-.result-buttons{height:72px;display:flex;justify-content:center;align-items:center;gap:16px;margin-top:16px;}
-.result-buttons button{width:140px;height:40px;border:none;border-radius:6px;background:#1890ff;color:#fff;cursor:pointer;}
-
-/* 热门案例 */
-.popular{width:480px;height:320px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:8px;}
-.popular-item{text-align:center;font-size:12px;}
-.popular-item img{width:128px;height:96px;border-radius:4px;transition:transform 0.2s;}
-.popular-item img:hover{transform:scale(1.1);}
-
-/* 使用技巧卡片 */
-.tips-card{display:flex;gap:16px;}
-.tip{width:168px;text-align:center;}
-.tip img{width:32px;height:32px;margin-bottom:8px;}
-.tip-title{font-size:14px;font-weight:bold;margin-bottom:4px;}
-.tip-desc{font-size:12px;line-height:1.4;}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 AI好伴 - 边界AI平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
 </head>
 <body>
-<div class="layout">
-    <!-- 左侧功能区 -->
-    <div class="sidebar">
-        <!-- 主标题 -->
-        <div class="title-card">
-            <h1>文生图创作</h1>
-            <p>请输入描述，选择风格和尺寸，生成专属AI图像</p>
-        </div>
-
-        <!-- 创作设置卡片 -->
-        <div class="card" style="width:720px;height:680px;">
-            <!-- 描述输入 -->
-            <div class="text-area">
-                <label>图像描述</label>
-                <textarea id="descInput" placeholder="详细描述您想要的图像..."></textarea>
-                <div class="char-count" id="charCount">0 / 500</div>
-                <div class="quick-buttons">
-                    <button onclick="insertQuick('未来城市夜景')">未来城市夜景</button>
-                    <button onclick="insertQuick('赛博朋克风')">赛博朋克风</button>
-                    <button onclick="insertQuick('写实风格美女')">写实风格美女</button>
-                    <button onclick="insertQuick('油画静物')">油画静物</button>
+    <div class="app-container">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar">
+            <!-- Logo区域 -->
+            <div class="logo-area">
+                <div class="logo">
+                    <i class="fas fa-rocket rocket-icon"></i>
+                    <h1>AI好伴</h1>
                 </div>
+                <div class="logo-subtitle">边界AI平台</div>
             </div>
 
-            <!-- 风格选择 -->
-            <div class="style-area">
-                <label>艺术风格</label>
-                <select id="styleSelect">
-                    <option value="写实">写实</option>
-                    <option value="动漫">动漫</option>
-                    <option value="油画">油画</option>
-                    <option value="水彩">水彩</option>
-                    <option value="赛博朋克">赛博朋克</option>
-                </select>
-            </div>
-
-            <!-- 尺寸与质量 -->
-            <div class="size-quality">
-                <div class="size">
-                    <label>尺寸选择</label>
-                    <select id="sizeSelect">
-                        <option value="512x512">512×512</option>
-                        <option value="1024x1024">1024×1024</option>
-                        <option value="1024x768">1024×768</option>
-                        <option value="1920x1080">1920×1080</option>
-                    </select>
-                </div>
-                <div class="quality">
-                    <label>质量 (%)</label>
-                    <input type="range" id="qualityRange" min="25" max="100" value="75">
-                    <div id="qualityVal">75%</div>
-                </div>
-            </div>
-
-            <!-- 高级设置折叠 -->
-            <div class="advanced">
-                <div class="advanced-toggle" onclick="toggleAdvanced()">高级设置 ▼</div>
-                <div class="advanced-content" id="advancedContent">
-                    <div>
-                        <label>种子值：</label>
-                        <input type="text" id="seedInput" placeholder="随机或指定数值">
+            <!-- 导航卡片区域 -->
+            <nav class="nav-container">
+                <!-- 第一组：核心功能区 -->
+                <div class="nav-section">
+                    <div class="nav-card active" data-page="home">
+                        <i class="fas fa-home"></i>
+                        <span>首页</span>
                     </div>
-                    <div>
-                        <label>去噪强度：</label>
-                        <input type="range" id="denoiseRange" min="25" max="100" value="50">
-                        <div id="denoiseVal">50%</div>
+                    <div class="nav-card" data-page="super-chat">
+                        <i class="fas fa-comments"></i>
+                        <span>超级对话</span>
+                    </div>
+                    <div class="nav-card" data-page="super-agent">
+                        <i class="fas fa-robot"></i>
+                        <span>超级Agent</span>
+                    </div>
+                    <div class="nav-card" data-page="super-intelligence">
+                        <i class="fas fa-brain"></i>
+                        <span>超级智能体</span>
+                    </div>
+                    <div class="nav-card" data-page="image-generation">
+                        <i class="fas fa-image"></i>
+                        <span>图像生成</span>
+                    </div>
+                    <div class="nav-card" data-page="ai-drawing">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>AI修图</span>
+                    </div>
+                    <div class="nav-card" data-page="stock-analysis">
+                        <i class="fas fa-chart-line"></i>
+                        <span>股票分析</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- 按钮区域 -->
-            <div class="button-area">
-                <button id="generateBtn" onclick="generateImage()">生成图像 (5积分)</button>
-                <button id="downloadBtn" onclick="downloadImage()">下载高清版</button>
-            </div>
-        </div>
+                <!-- 第二组：工具箱 -->
+                <div class="nav-section">
+                    <div class="section-label">工具箱</div>
+                    <div class="nav-card" data-page="3d-models">
+                        <i class="fas fa-cube"></i>
+                        <span>3D模型</span>
+                    </div>
+                    <div class="nav-card" data-page="video-generation">
+                        <i class="fas fa-video"></i>
+                        <span>视频生成</span>
+                    </div>
+                    <div class="nav-card" data-page="suno-music">
+                        <i class="fas fa-music"></i>
+                        <span>Suno音乐</span>
+                    </div>
+                    <div class="nav-card" data-page="recent-hot">
+                        <i class="fas fa-fire"></i>
+                        <span>近期热门</span>
+                    </div>
+                    <div class="nav-card" data-page="super-ai-search">
+                        <i class="fas fa-search"></i>
+                        <span>超级AI搜索</span>
+                    </div>
+                    <div class="nav-card" data-page="beautiful-ppt">
+                        <i class="fas fa-file-powerpoint"></i>
+                        <span>精美PPT</span>
+                    </div>
+                    <div class="nav-card" data-page="audio-processing">
+                        <i class="fas fa-volume-up"></i>
+                        <span>音频处理</span>
+                    </div>
+                    <div class="nav-card" data-page="ai-voice">
+                        <i class="fas fa-microphone"></i>
+                        <span>AI声音</span>
+                    </div>
+                    <div class="nav-card" data-page="document-processing">
+                        <i class="fas fa-file-alt"></i>
+                        <span>文档处理</span>
+                    </div>
+                    <div class="nav-card" data-page="ai-treasure-box">
+                        <i class="fas fa-box-open"></i>
+                        <span>AI百宝箱</span>
+                    </div>
+                    <div class="nav-card" data-page="ai-design">
+                        <i class="fas fa-palette"></i>
+                        <span>AI设计</span>
+                    </div>
+                    <div class="nav-card" data-page="smart-charts">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>智能图表</span>
+                    </div>
+                </div>
 
-        <!-- 使用技巧卡片 -->
-        <div class="card tips-card" style="width:720px;height:240px;">
-            <div class="tip">
-                <img src="./assets/images/111.jpg" alt="技巧1">
-                <div class="tip-title">具体描述</div>
-                <div class="tip-desc">详细描述图像的内容</div>
+                <!-- 第三组：热门功能 -->
+                <div class="nav-section">
+                    <div class="section-label">热门功能</div>
+                    <div class="nav-card" data-page="writing-assistant">
+                        <i class="fas fa-pen-fancy"></i>
+                        <span>写作助手</span>
+                    </div>
+                    <div class="nav-card" data-page="online-translation">
+                        <i class="fas fa-language"></i>
+                        <span>在线翻译</span>
+                    </div>
+                    <div class="nav-card" data-page="article-aigc">
+                        <i class="fas fa-newspaper"></i>
+                        <span>文章AIGC</span>
+                    </div>
+                    <div class="nav-card" data-page="more-functions">
+                        <i class="fas fa-ellipsis-h"></i>
+                        <span>更多功能</span>
+                    </div>
+                    <div class="nav-card highlight-card" data-page="1000-functions">
+                        <i class="fas fa-infinity"></i>
+                        <span>1000+功能</span>
+                    </div>
+                </div>
+
+                <!-- 底部功能区 -->
+                <div class="nav-section bottom-section">
+                    <div class="nav-card" data-page="pdf-tools">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>PDF工具</span>
+                    </div>
+                    <div class="nav-card" data-page="search-tools">
+                        <i class="fas fa-search-plus"></i>
+                        <span>搜索1000+个AI工具</span>
+                    </div>
+                    <div class="nav-card" data-page="download-client">
+                        <i class="fas fa-download"></i>
+                        <span>下载客户端</span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- 用户信息区域 -->
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="images/avatar-placeholder.jpg" alt="用户头像" onerror="this.src='111.jpg'">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">用户</div>
+                    <div class="user-status">免费版</div>
+                </div>
+                <div class="user-actions">
+                    <i class="fas fa-cog"></i>
+                </div>
             </div>
-            <div class="tip">
-                <img src="./assets/images/111.jpg" alt="技巧2">
-                <div class="tip-title">风格参考</div>
-                <div class="tip-desc">选择合适艺术风格</div>
+        </aside>
+
+        <!-- 右侧主内容区 -->
+        <main class="main-content">
+            <!-- 固定工具栏 -->
+            <header class="top-toolbar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索AI工具或功能...">
+                    <button class="search-btn">搜索</button>
+                </div>
+                
+                <div class="toolbar-actions">
+                    <div class="toolbar-item">
+                        <i class="fas fa-coins"></i>
+                        <span class="points">1500 积分</span>
+                    </div>
+                    <div class="toolbar-item notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="toolbar-item theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="toolbar-item">
+                        <button class="upgrade-btn">
+                            <i class="fas fa-crown"></i>
+                            升级会员
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 内容展示区 -->
+            <div class="content-area">
+                <!-- 当前页面标题 -->
+                <div class="page-header">
+                    <h2 class="page-title">首页</h2>
+                    <div class="page-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-plus"></i>
+                            新建
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-history"></i>
+                            历史记录
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 页面内容占位区 -->
+                <div class="page-content" id="pageContent">
+                    <!-- 这里的内容会根据左侧导航点击动态加载 -->
+                    <div class="welcome-message">
+                        <div class="welcome-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>欢迎使用 AI好伴</h3>
+                        <p>请从左侧导航选择您需要的AI功能</p>
+                        <p class="subtext">集大成于一身的AI工具集合，支持1000+种AI功能</p>
+                        
+                        <div class="feature-highlights">
+                            <div class="feature-card">
+                                <i class="fas fa-robot"></i>
+                                <h4>DeepSeek专线</h4>
+                                <p>AI搜索、AI写作、图像生成、AI阅读等</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-brain"></i>
+                                <h4>40+模型支持</h4>
+                                <p>GT-40-mini、边界GT-4.0、GPT-4等</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-magic"></i>
+                                <h4>智能工具箱</h4>
+                                <p>文档处理、音频处理、AI设计等</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="tip">
-                <img src="./assets/images/111.jpg" alt="技巧3">
-                <div class="tip-title">构图建议</div>
-                <div class="tip-desc">参考经典构图方法</div>
-            </div>
-            <div class="tip">
-                <img src="./assets/images/111.jpg" alt="技巧4">
-                <div class="tip-title">氛围营造</div>
-                <div class="tip-desc">注意光影与环境</div>
-            </div>
-        </div>
+        </main>
     </div>
 
-    <!-- 右侧展示区 -->
-    <div class="display">
-        <!-- 生成结果 -->
-        <div class="result-card" id="resultCard">
-            <h2>生成结果</h2>
-            <p>等待生成图像</p>
-            <p>在左侧输入描述并点击生成</p>
-            <img id="resultImg" src="./assets/images/111.jpg" alt="生成结果">
-            <div class="result-buttons">
-                <button onclick="generateImage()">重新生成</button>
-                <button id="resultDownloadBtn" onclick="downloadImage()">下载高清版</button>
-            </div>
-        </div>
+    <script>
+        // 简单的页面切换逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有导航卡片
+            const navCards = document.querySelectorAll('.nav-card');
+            const pageContent = document.getElementById('pageContent');
+            const pageTitle = document.querySelector('.page-title');
+            
+            // 页面内容模板
+            const pageTemplates = {
+                'home': `
+                    <div class="welcome-message">
+                        <div class="welcome-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>欢迎使用 AI好伴</h3>
+                        <p>请从左侧导航选择您需要的AI功能</p>
+                        <p class="subtext">集大成于一身的AI工具集合，支持1000+种AI功能</p>
+                        
+                        <div class="feature-highlights">
+                            <div class="feature-card">
+                                <i class="fas fa-robot"></i>
+                                <h4>DeepSeek专线</h4>
+                                <p>AI搜索、AI写作、图像生成、AI阅读等</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-brain"></i>
+                                <h4>40+模型支持</h4>
+                                <p>GT-40-mini、边界GT-4.0、GPT-4等</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-magic"></i>
+                                <h4>智能工具箱</h4>
+                                <p>文档处理、音频处理、AI设计等</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'super-chat': '<div class="page-placeholder"><h3><i class="fas fa-comments"></i> 超级对话</h3><p>多模型对话功能，支持100+大模型</p></div>',
+                'super-agent': '<div class="page-placeholder"><h3><i class="fas fa-robot"></i> 超级Agent</h3><p>智能Agent系统，全模型调用</p></div>',
+                'super-intelligence': '<div class="page-placeholder"><h3><i class="fas fa-brain"></i> 超级智能体</h3><p>1000+功能集成</p></div>',
+                'image-generation': '<div class="page-placeholder"><h3><i class="fas fa-image"></i> 图像生成</h3><p>3D手办、插画、头像生成</p></div>',
+                'ai-drawing': '<div class="page-placeholder"><h3><i class="fas fa-paint-brush"></i> AI修图</h3><p>深度修图、PS功能</p></div>',
+                'stock-analysis': '<div class="page-placeholder"><h3><i class="fas fa-chart-line"></i> 股票分析</h3><p>精准预测、数据分析</p></div>'
+            };
+            
+            // 页面标题映射
+            const pageTitles = {
+                'home': '首页',
+                'super-chat': '超级对话',
+                'super-agent': '超级Agent',
+                'super-intelligence': '超级智能体',
+                'image-generation': '图像生成',
+                'ai-drawing': 'AI修图',
+                'stock-analysis': '股票分析',
+                '3d-models': '3D模型',
+                'video-generation': '视频生成',
+                'suno-music': 'Suno音乐',
+                'recent-hot': '近期热门',
+                'super-ai-search': '超级AI搜索',
+                'beautiful-ppt': '精美PPT',
+                'audio-processing': '音频处理',
+                'ai-voice': 'AI声音',
+                'document-processing': '文档处理',
+                'ai-treasure-box': 'AI百宝箱',
+                'ai-design': 'AI设计',
+                'smart-charts': '智能图表',
+                'writing-assistant': '写作助手',
+                'online-translation': '在线翻译',
+                'article-aigc': '文章AIGC',
+                'more-functions': '更多功能',
+                '1000-functions': '1000+功能',
+                'pdf-tools': 'PDF工具',
+                'search-tools': '搜索AI工具',
+                'download-client': '下载客户端'
+            };
+            
+            // 为每个导航卡片添加点击事件
+            navCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // 移除所有卡片的激活状态
+                    navCards.forEach(c => c.classList.remove('active'));
+                    
+                    // 添加当前卡片的激活状态
+                    this.classList.add('active');
+                    
+                    // 获取页面标识
+                    const pageId = this.getAttribute('data-page');
+                    
+                    // 更新页面标题
+                    pageTitle.textContent = pageTitles[pageId] || 'AI好伴';
+                    
+                    // 更新页面内容
+                    if (pageTemplates[pageId]) {
+                        pageContent.innerHTML = pageTemplates[pageId];
+                    } else {
+                        // 默认页面内容
+                        pageContent.innerHTML = `
+                            <div class="page-placeholder">
+                                <h3><i class="${this.querySelector('i').className}"></i> ${pageTitles[pageId] || '功能页面'}</h3>
+                                <p>功能开发中，敬请期待...</p>
+                                <div class="placeholder-image">
+                                    <img src="images/placeholder.jpg" alt="占位图" onerror="this.style.display='none'">
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            });
+            
+            // 主题切换
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.className = 'fas fa-sun';
+                } else {
+                    icon.className = 'fas fa-moon';
+                }
+            });
+            
+            // 升级按钮点击
+            const upgradeBtn = document.querySelector('.upgrade-btn');
+            upgradeBtn.addEventListener('click', function() {
+                alert('会员升级功能即将开放，敬请期待！');
+            });
+        });
+    </script>
 
-        <!-- 热门案例 -->
-        <div class="popular">
-            <div class="popular-item">
-                <img src="./assets/images/111.jpg" alt="案例1">
-                <div>未来城市夜景</div>
-            </div>
-            <div class="popular-item">
-                <img src="./assets/images/111.jpg" alt="案例2">
-                <div>赛博朋克风</div>
-            </div>
-            <div class="popular-item">
-                <img src="./assets/images/111.jpg" alt="案例3">
-                <div>写实美女</div>
-            </div>
-            <div class="popular-item">
-                <img src="./assets/images/111.jpg" alt="案例4">
-                <div>油画静物</div>
-            </div>
-            <div class="popular-item">
-                <img src="./assets/images/111.jpg" alt="案例5">
-                <div>水彩风景</div>
-            </div>
-            <div class="popular-item">
-                <img src="./assets/images/111.jpg" alt="案例6">
-                <div>动漫角色</div>
-            </div>
-        </div>
-    </div>
-</div>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-hover: rgba(255, 255, 255, 0.15);
+            --card-active: rgba(99, 102, 241, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --main-bg: #f8fafc;
+            --toolbar-bg: #ffffff;
+            --content-bg: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
 
-<script>
-// 页面交互 JS
-const descInput = document.getElementById('descInput');
-const charCount = document.getElementById('charCount');
-const qualityRange = document.getElementById('qualityRange');
-const qualityVal = document.getElementById('qualityVal');
-const denoiseRange = document.getElementById('denoiseRange');
-const denoiseVal = document.getElementById('denoiseVal');
-const advancedContent = document.getElementById('advancedContent');
-let advancedOpen = false;
+        body.dark-mode {
+            --main-bg: #0f172a;
+            --toolbar-bg: #1e293b;
+            --content-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
 
-descInput.addEventListener('input',()=>{charCount.textContent = `${descInput.value.length} / 500`});
-qualityRange.addEventListener('input',()=>{qualityVal.textContent = `${qualityRange.value}%`});
-denoiseRange.addEventListener('input',()=>{denoiseVal.textContent = `${denoiseRange.value}%`});
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-function insertQuick(text){descInput.value = text; charCount.textContent = `${text.length} / 500`;}
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', sans-serif;
+            background-color: var(--main-bg);
+            color: #333;
+            transition: background-color 0.3s ease;
+            overflow: hidden;
+        }
 
-// 高级设置折叠
-function toggleAdvanced(){
-    advancedOpen = !advancedOpen;
-    advancedContent.style.display = advancedOpen ? 'block' : 'none';
-}
+        .app-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
 
-// 生成图像
-function generateImage(){
-    const desc = descInput.value || "默认示例图像";
-    const style = document.getElementById('styleSelect').value;
-    const size = document.getElementById('sizeSelect').value;
-    const quality = qualityRange.value;
+        /* 左侧导航栏样式 */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
 
-    const resultImg = document.getElementById('resultImg');
-    resultImg.src = "./assets/images/111.jpg"; // 这里可换成实际生成图API返回
+        .logo-area {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    // 显示下载按钮
-    document.getElementById('downloadBtn').style.display = 'inline-block';
-    document.getElementById('resultDownloadBtn').style.display = 'inline-block';
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
 
-// 下载图片
-function downloadImage(){
-    const link = document.createElement('a');
-    link.href = document.getElementById('resultImg').src;
-    link.download = 'AI生成图.jpg';
-    link.click();
-}
-</script>
+        .rocket-icon {
+            font-size: 28px;
+            color: #60a5fa;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding-left: 40px;
+        }
+
+        .nav-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-section {
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            padding-left: 12px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .nav-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--card-bg);
+            color: var(--text-secondary);
+        }
+
+        .nav-card:hover {
+            background: var(--card-hover);
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .nav-card.active {
+            background: var(--card-active);
+            color: var(--text-primary);
+            border-left: 4px solid #60a5fa;
+        }
+
+        .nav-card i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-card span {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .highlight-card {
+            background: rgba(96, 165, 250, 0.15);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .highlight-card:hover {
+            background: rgba(96, 165, 250, 0.25);
+        }
+
+        .bottom-section {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 12px;
+            border: 2px solid #60a5fa;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .user-status {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .user-actions {
+            font-size: 18px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+
+        .user-actions:hover {
+            color: var(--text-primary);
+        }
+
+        /* 右侧主内容区样式 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 顶部工具栏 */
+        .top-toolbar {
+            height: 70px;
+            background: var(--toolbar-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            box-shadow: var(--shadow);
+            z-index: 5;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 50px;
+            padding: 8px 16px;
+            width: 400px;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .search-bar {
+            background: #334155;
+        }
+
+        .search-bar i {
+            color: #64748b;
+            margin-right: 10px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            flex: 1;
+            font-size: 15px;
+            color: #334155;
+            outline: none;
+        }
+
+        body.dark-mode .search-bar input {
+            color: #cbd5e1;
+        }
+
+        .search-bar input::placeholder {
+            color: #94a3b8;
+        }
+
+        .search-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: transform 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .toolbar-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #64748b;
+            transition: color 0.2s;
+        }
+
+        .toolbar-item:hover {
+            color: var(--primary-color);
+        }
+
+        .points {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .notification {
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle {
+            font-size: 18px;
+        }
+
+        .upgrade-btn {
+            background: linear-gradient(90deg, #f59e0b, #f97316);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+
+        .upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        /* 内容区域 */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            background: var(--main-bg);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        body.dark-mode .page-title {
+            color: #f1f5f9;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-bg);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #475569;
+        }
+
+        body.dark-mode .action-btn {
+            background: #334155;
+            border-color: #475569;
+            color: #cbd5e1;
+        }
+
+        .action-btn:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .action-btn:hover {
+            background: #475569;
+        }
+
+        /* 欢迎页面样式 */
+        .welcome-message {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .welcome-icon {
+            font-size: 80px;
+            color: #60a5fa;
+            margin-bottom: 24px;
+        }
+
+        .welcome-message h3 {
+            font-size: 36px;
+            margin-bottom: 16px;
+            color: #1e293b;
+        }
+
+        body.dark-mode .welcome-message h3 {
+            color: #f1f5f9;
+        }
+
+        .welcome-message p {
+            font-size: 18px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .subtext {
+            font-size: 16px;
+            margin-bottom: 40px !important;
+        }
+
+        .feature-highlights {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            background: var(--content-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            width: 240px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .feature-card i {
+            font-size: 36px;
+            color: #60a5fa;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h4 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+
+        body.dark-mode .feature-card h4 {
+            color: #f1f5f9;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* 占位页面样式 */
+        .page-placeholder {
+            padding: 40px;
+            text-align: center;
+            background: var(--content-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+
+        .page-placeholder h3 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            color: #1e293b;
+            font-size: 24px;
+        }
+
+        body.dark-mode .page-placeholder h3 {
+            color: #f1f5f9;
+        }
+
+        .page-placeholder p {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .placeholder-image {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .placeholder-image img {
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
 </body>
 </html>
